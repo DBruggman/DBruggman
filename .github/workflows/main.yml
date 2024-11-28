@@ -43,8 +43,23 @@ jobs:
       - name: Build project
         run: npm run build # Uses the "build" script in your package.json
 
-      # Step 5: Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
+      # Step 5: Upload build artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
-          folder: dist
+          name: github-pages
+          path: dist
+
+  deploy:
+      runs-on: ubuntu-latest
+      needs: build-and-deploy
+      permissions:
+        pages: write
+        id-token: write
+      steps:
+        # Step 6: Deploy to GitHub Pages
+        - name: Deploy to GitHub Pages
+          uses: actions/deploy-pages@v2
+          with:
+            artivact_name: github-pages
+    
