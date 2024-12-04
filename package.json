@@ -2,7 +2,7 @@
   "name": "dbruggman",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://dbruggman.github.io/DBruggman/",
+  "homepage": "https://dbruggman.github.io/",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
