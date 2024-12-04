@@ -23,31 +23,32 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    steps:
-      # Step 1: Checkout the code
+    steps: 
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js
+      
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
 
-      # Step 3: Install dependencies
+      
       - name: Install dependencies
         run: npm ci # Ensures dependencies are installed using the package-lock.json file
 
-      # Step 4: Build the project
+      
       - name: Build project
         run: npm run build # Uses the "build" script in your package.json
 
-      # Step 5: Upload build artifact
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+      - name: List dist directory contents
+        run: ls -lah dist
+      
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: github-pages
+          name: github-pages-artifact
           path: dist
 
   deploy:
@@ -57,9 +58,16 @@ jobs:
         pages: write
         id-token: write
       steps:
-        # Step 6: Deploy to GitHub Pages
+        - name: Donwload artifact
+          uses: actions/download-artifact@v3
+          with:
+            name: github-pages-artifact
+
+        - name: List downloaded artifact contents
+          run: ls -lah github-pages-artifact
+                  
         - name: Deploy to GitHub Pages
           uses: actions/deploy-pages@v2
           with:
-            artifact_name: github-pages
+            path: github-pages-artifact
     
